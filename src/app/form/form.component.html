@@ -1,0 +1,38 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <label>Email:
+    <input type="email" formControlName="email" />
+  </label>
+  
+  <div *ngIf="email?.invalid && email?.touched" class="error">
+    <span *ngIf="email?.errors?.['required']">Email обов’язковий</span>
+    <span *ngIf="email?.errors?.['pattern']">Email некоректний</span>
+  </div>
+
+  <label>Пароль:
+    <input type="password" formControlName="password" />
+  </label>
+  <div *ngIf="password?.invalid && password?.touched" class="error">
+    <span *ngIf="password?.errors?.['required']">Пароль обов’язковий</span>
+    <span *ngIf="password?.errors?.['minlength']">Мін. 6 символів</span>
+  </div>
+
+  <label>
+    <input type="checkbox" formControlName="agree" /> Я погоджуюсь
+  </label>
+  <div *ngIf="myForm.get('agree')?.touched && myForm.get('agree')?.invalid" class="error">
+    <span>Потрібна згода</span>
+  </div>
+
+  <div formArrayName="hobbies">
+    <label>Увлечения (необов’язково):</label>
+    <div *ngFor="let hobby of hobbies.controls; let i = index">
+      <input [formControlName]="i" />
+      <button type="button" (click)="removeHobby(i)">Видалити</button>
+    </div>
+    <button type="button" (click)="addHobby()">Додати хобі</button>
+  </div>
+
+  <button type="submit" [disabled]="!myForm.valid">Отправить</button>
+</form>
+
+
